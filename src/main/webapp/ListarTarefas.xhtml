@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<h:outputStylesheet library="css" name="file.css" />
+
+	<title>Gerenciador de Tarefas</title>
+</h:head>
+<h:body>
+
+
+
+	<h:form id="frm">
+		<p:messages autoUpdate="true" />
+
+		<h1>Listagem de Tarefas</h1>
+
+		<h:panelGrid column="2">
+			<p:outputLabel value="Número" />
+			<p:inputText size="10" value="#{cadastroBean.cadastro.id}"
+				required="true" label="Número" />
+		</h:panelGrid>
+
+		<h:panelGrid column="2">
+			<p:outputLabel value="Titulo/Descrição" />
+			<p:inputText size="50" value="#{cadastroBean.cadastro.descricao}"
+				label="Título/Descrição" />
+		</h:panelGrid>
+
+		<h:panelGrid column="4" rows="4">
+			<p:outputLabel for="responsavel" value="Setor Responsavel"
+				styleClass="input-label" />
+			<p:selectOneMenu id="responsavel"
+				value="#{cadastroBean.cadastro.responsavel}"
+				requiredMessage="Selecione um setor responsavel">
+				<f:selectItem itemLabel="--Selecione--" noSelectionOption="true" />
+				<f:selectItem itemLabel="Administração" itemValue="ADMINISTRAÇÃO" />
+				<f:selectItem itemLabel="Analise" itemValue="ANALISE" />
+				<f:selectItem itemLabel="Direção" itemValue="DIREÇÃO" />
+				<f:selectItem itemLabel="Supervisão" itemValue="SUPERVISÃO" />
+				<f:selectItem itemLabel="Secretaria" itemValue="SECRETARIA" />
+				<f:selectItem itemLabel="Desenvolvimento"
+					itemValue="DESENVOLVIMENTO" />
+			</p:selectOneMenu>
+
+			<p:outputLabel for="situacao" value="Situação"
+				styleClass="input-Label" />
+			<p:selectOneMenu id="situacao"
+				value="#{cadastroBean.cadastro.situacao}"
+				requiredMessage="Selecione a situação">
+				<f:selectItem itemLabel="--Selecione--" noSelectionOption="true" />
+				<f:selectItem itemLabel="Concluído" itemValue="CONCLUIDO" />
+				<f:selectItem itemLabel="Aguardando" itemValue="AGUARDANDO" />
+				<f:selectItem itemLabel="Em Andamento" itemValue="EM ANDAMENTO" />
+				<f:selectItem itemLabel="Com impedimento"
+					itemValue="COM IMPEDIMENTO" />
+			</p:selectOneMenu>
+			<p:column>
+				<p:outputLabel />
+				<p:commandButton value="Buscar Tarefas"
+					action="#{cadastroBean.carregar}" update="@form"
+					process="@this"
+					style="margin-top: 10px" />
+				<p:outputLabel />
+				<p:commandButton value="Salvar Edição"
+					action="#{cadastroBean.adicionar}" update="frm"
+					style="margin-top: 10px" />
+			</p:column>
+		</h:panelGrid>
+
+		<p:dataTable value="#{cadastroBean.cadastros}" var="c" id="frm"
+			paginator="true" rows="5">
+			<p:column headerText="Número" width="60">
+				<p:outputLabel value="#{c.id}" />
+			</p:column>
+
+			<p:column headerText="Título">
+				<p:outputLabel value="#{c.titulo}" />
+			</p:column>
+
+			<p:column headerText="Setor Responsavel">
+				<p:outputLabel value="#{c.responsavel}" />
+			</p:column>
+
+			<p:column headerText="Ações" width="120" style="text-align: center">
+				<p:commandButton icon="ui-icon-pencil" update="@form"
+					process="@this">
+					<f:setPropertyActionListener value="#{c}"
+						target="#{cadastroBean.cadastro}" />
+				</p:commandButton>
+				<p:commandButton action="#{cadastroBean.Excluir}"
+					icon="ui-icon-trash" update="@form" process="@this">
+					<f:setPropertyActionListener value="#{c}"
+						target="#{cadastroBean.cadastro}" />
+				</p:commandButton>
+				<p:commandButton action="#{cadastroBean.Remover}"
+					icon="ui-icon-circle-check" update="@form" process="@this">
+					<f:setPropertyActionListener value="#{c}"
+						target="#{cadastroBean.cadastro}" />
+				</p:commandButton>
+			</p:column>
+
+		</p:dataTable>
+
+	</h:form>
+
+</h:body>
+</html>
